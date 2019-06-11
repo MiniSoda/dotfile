@@ -127,15 +127,16 @@ set hlsearch
 
 " 设置 gvim 显示字体
 " set guifont= Consolas
-" set guifont=Consolas\ Hybrid\ 11.5
-set guifont=YaHei\ Consolas\ Hybrid\ 12
+set guifont=Powerline\ Consolas\ 12
+" set guifont=YaHei\ Consolas\ Hybrid\ 12
 
 " 禁止折行
 set nowrap
 
 " 设置状态栏主题风格
 let g:Powerline_colorscheme='solarized256'
-
+" set fancy powerline
+"let g:Powerline_symbols = 'fancy'
 
 " 开启语法高亮功能
 syntax enable
@@ -219,10 +220,10 @@ let tagbar_left=1
 nnoremap <Leader>il :TagbarToggle<CR> 
 " 设置标签子窗口的宽度 
 let tagbar_width=32 
+" set sort by appearence
+let g:tagbar_sort=0
 " tagbar 子窗口中不显示冗余帮助信息 
 let g:tagbar_compact=1
-" sort according to appearence order
-let g:tarbar_sort=0
 " 设置 ctags 对哪些代码标识符生成标签
 let g:tagbar_type_cpp = {
     \ 'kinds' : [
