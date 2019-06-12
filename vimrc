@@ -64,7 +64,6 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'vim-scripts/phd'
-Plugin 'Lokaltog/vim-powerline'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'derekwyatt/vim-fswitch'
@@ -82,14 +81,14 @@ Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
-Plugin 'fholgado/minibufexpl.vim'
 Plugin 'gcmt/wildfire.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'suan/vim-instant-markdown'
 Plugin 'rafi/awesome-vim-colorschemes'
 Plugin 'rdnetto/YCM-Generator'
-
+Plugin 'vim-airline/vim-airline'
+Plugin 'tpope/vim-fugitive'
 
 " 插件列表结束
 call vundle#end()
@@ -125,18 +124,34 @@ set cursorcolumn
 " 高亮显示搜索结果
 set hlsearch
 
+" airline config
+let g:airline_powerline_fonts = 1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#buffer_nr_show = 0
+let g:airline#extensions#tabline#fnametruncate = 16
+let g:airline#extensions#tabline#fnamecollapse = 2
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:bufferline_show_bufnr = 0
+
+" mapping tab hotkey
+:nnoremap <Tab> :bnext<CR>
+:nnoremap <S-Tab> :bprevious<CR>
+:nnoremap <C-X> :bdelete<CR>
+
+
 " 设置 gvim 显示字体
 " set guifont= Consolas
-set guifont=Powerline\ Consolas\ 12
+" set guifont=Powerline\ Consolas\ 12
+set guifont=Consolas\ NF\ 12
 " set guifont=YaHei\ Consolas\ Hybrid\ 12
+" set guifont=Go\ Mono\ for\ Powerline\ 12
 
 " 禁止折行
 set nowrap
-
-" 设置状态栏主题风格
-let g:Powerline_colorscheme='solarized256'
-" set fancy powerline
-"let g:Powerline_symbols = 'fancy'
 
 " 开启语法高亮功能
 syntax enable
@@ -214,6 +229,7 @@ let g:SignatureMap = {
         \ }
 
 
+set updatetime=500
 " 设置 tagbar 子窗口的位置出现在主编辑区的左边 
 let tagbar_left=1 
 " 设置显示／隐藏标签列表子窗口的快捷键。速记：identifier list by tag
@@ -274,8 +290,8 @@ nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>gt :YcmCompleter GetType<CR>
 " 获取父类
 nnoremap <leader>gp :YcmCompleter GetParent<CR>
-" 获取文档
-nnoremap <leader>gd :YcmCompleter GetDoc<CR>
+" GoToInclude File under current cursor
+nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
 
 
 
@@ -324,9 +340,9 @@ let NERDTreeAutoDeleteBuffer=1
 
 
 " 显示/隐藏 MiniBufExplorer 窗口
-map <Leader>bl :MBEToggle<cr>
+" map <Leader>bl :MBEToggle<cr>
 " buffer 切换快捷键
-map <Leader>ll :MBEbn<cr>
-map <Leader>lh :MBEbp<cr>
+" map <Leader>ll :MBEbn<cr>
+" map <Leader>lh :MBEbp<cr>
 
 
