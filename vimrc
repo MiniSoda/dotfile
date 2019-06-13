@@ -140,12 +140,13 @@ let g:bufferline_show_bufnr = 0
 " mapping tab hotkey
 :nnoremap <Tab> :bnext<CR>
 :nnoremap <S-Tab> :bprevious<CR>
-:nnoremap <C-X> :bdelete<CR>
+:nnoremap <C-X> :bp\|:bdelete #<CR>
 
 
 " 设置 gvim 显示字体
 " set guifont= Consolas
 " set guifont=Powerline\ Consolas\ 12
+" font repository https://github.com/Znuff/consolas-powerline
 set guifont=Consolas\ NF\ 12
 " set guifont=YaHei\ Consolas\ Hybrid\ 12
 " set guifont=Go\ Mono\ for\ Powerline\ 12
@@ -198,10 +199,29 @@ nmap <silent> <Leader>sw :FSHere<cr>
 nmap <Leader>tn :tnext<CR>
 " 反向遍历同名标签
 nmap <Leader>tp :tprevious<CR>
+" 取消修改buffer后默认阻止切换buffer的行为
+:set hidden
+
+
+fun! GetCurrentRoot()
+  let t:root = g:NERDTree.ForCurrentTab().getRoot().path.str()
+endfun
+
+
 " 使用 ctrlsf.vim
 " 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in
 " project
 nnoremap <Leader>sp :CtrlSF<CR>
+" Assign search path as project
+let g:ctrlsf_default_root = 'project'
+" auto focus to search panel
+let g:ctrlsf_auto_focus = {
+    \ "at": "start",
+    \ }
+" available when version > 8.0
+let g:ctrlsf_search_mode = 'async'
+" width of search panel
+let g:ctrlsf_winsize = '30%'
 
 
 let g:SignatureMap = {
@@ -337,6 +357,8 @@ let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
+" 当没有buff时关闭NerdTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
 " 显示/隐藏 MiniBufExplorer 窗口
@@ -344,5 +366,4 @@ let NERDTreeAutoDeleteBuffer=1
 " buffer 切换快捷键
 " map <Leader>ll :MBEbn<cr>
 " map <Leader>lh :MBEbp<cr>
-
 
