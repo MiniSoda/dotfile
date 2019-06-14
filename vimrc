@@ -55,6 +55,10 @@ map <silent> <F11> :call ToggleFullscreen()<CR>
 " 启动 vim 时自动全屏
 autocmd VimEnter * call ToggleFullscreen()
 
+" 保存 undo 历史
+set undodir=~/.undo_history/
+set undofile
+
 " vundle 环境设置
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -68,7 +72,7 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'kshenoy/vim-signature'
-Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
+" Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
 Plugin 'majutsushi/tagbar'
 Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'vim-scripts/DfrankUtil'
@@ -89,6 +93,8 @@ Plugin 'rafi/awesome-vim-colorschemes'
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-obsession'
+
 
 " 插件列表结束
 call vundle#end()
@@ -136,6 +142,14 @@ let g:airline#extensions#tabline#fnametruncate = 16
 let g:airline#extensions#tabline#fnamecollapse = 2
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:bufferline_show_bufnr = 0
+
+" 使用obsession
+ let g:airline#extensions#obsession#enabled = 1
+ " set marked window indicator string
+ let g:airline#extensions#obsession#indicator_text = '$'
+
+map <leader>ss :Obsess ~/.vim/bundle/vim-obsession/session<cr>
+map <leader>rs :source ~/.vim/bundle/vim-obsession/session<cr>
 
 " mapping tab hotkey
 :nnoremap <Tab> :bnext<CR>
@@ -312,6 +326,8 @@ nnoremap <leader>gt :YcmCompleter GetType<CR>
 nnoremap <leader>gp :YcmCompleter GetParent<CR>
 " GoToInclude File under current cursor
 nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
+
+nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 
 
 
