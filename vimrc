@@ -352,6 +352,8 @@ set tags+=~/.stdcpp.tags
 set completeopt-=preview
 " 从第一个键入字符就开始罗列匹配项
 let g:ycm_min_num_of_chars_for_completion=1
+" 补全快捷键
+let g:ycm_key_invoke_completion = '<c-space>'
 " 禁止缓存匹配项，每次都重新生成匹配项
 let g:ycm_cache_omnifunc=0
 " 语法关键字补全          
