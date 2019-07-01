@@ -37,7 +37,7 @@ flags = [
     # INSERT FLAGS HERE
 ]
 
-
+sysroot_dict = {}
 # Set this to the absolute path to the folder (NOT the file!) containing the
 # compile_commands.json file to use that instead of 'flags'. See here for
 # more details: http://clang.llvm.org/docs/JSONCompilationDatabase.html
@@ -69,32 +69,15 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
   sysroot = ''
     
   for flag in flags: 
-    if 'arm-buildroot-linux-gnueabihf' in flag:
+    if 'arm-buildroot-linux-gnueabihf-g' in flag:
         gxx_path = flag
         if gxx_path:
-            cmd = gxx_path + ' -print-sysroot'    
-            sysroot = os.popen(cmd).read()
-        pass
+            sysroot = Load_System_Root(gxx_path)
+        break
   
   # search path for some libs
   new_flags = []
- 
-  new_flags.append('-target')
-  new_flags.append('arm-linux-gnueabihf')
-  
-  new_flags.append('--sysroot')
-  new_flags.append(sysroot.rstrip())
 
-  # C++ headers
-  new_flags += LoadSystemIncludes( gxx_path , flags )
-   
-  # assign target for clang
-  # log_file = open('/tmp/ycm_extra_conf.log', 'w+')
-  # log_file.write('outputs: ')
-  # for item in outputs:
-    # log_file.write( item )
-    # log_file.write( ' ' )
-  # log_file.write('\n')
 
   try:
     flags.remove( gxx_path )
@@ -111,7 +94,7 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
       if not flag.startswith( '/' ):
         new_flag = os.path.join( working_directory, flag )
       if flag.startswith( '=' ):
-          new_flag = os.path.join( sysroot.rstrip(), flag[2:] )
+        new_flag = os.path.join( sysroot.rstrip(), flag[2:] )
           # log_file.write( 'new_flag: ')
           # log_file.write( new_flag )
           # log_file.write( '\n' )
@@ -132,12 +115,23 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
   return new_flags
 
 
+def Load_System_Root( gxx_path ):
+  global sysroot_dict
+  if gxx_path in sysroot_dict:
+    return sysroot_dict[gxx_path]
+  else:
+    cmd = gxx_path + ' -print-sysroot'    
+    sysroot = os.popen(cmd).read()
+    sysroot_dict[gxx_path] = sysroot
+    return sysroot
+
+
 def IsHeaderFile( filename ):
   extension = os.path.splitext( filename )[ 1 ]
   return extension in [ '.H', '.h', '.hxx', '.hpp', '.hh' ]
 
 
-def LoadSystemIncludes(gxx_path, compile_flags):
+def LoadSystemIncludes( gxx_path ):
   regex = re.compile(r'(?:\#include \<...\> search starts here\:)(?P<list>.*?)(?:End of search list)', re.DOTALL)
   process = subprocess.Popen([gxx_path, '-v', '-E', '-x', 'c++', '-'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   process_out, process_err = process.communicate('')

@@ -94,7 +94,8 @@ Plugin 'rdnetto/YCM-Generator'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-obsession'
-
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/vim-lsp'
 
 " 插件列表结束
 call vundle#end()
@@ -149,19 +150,20 @@ let g:bufferline_show_bufnr = 0
  let g:airline#extensions#obsession#indicator_text = '$'
 
 map <leader>ss :Obsess ~/.vim/bundle/vim-obsession/session<cr>
-map <leader>rs :source ~/.vim/bundle/vim-obsession/session<cr>
+map <leader>ls :source ~/.vim/bundle/vim-obsession/session<cr>
 
 " mapping tab hotkey
 :nnoremap <Tab> :bnext<CR>
 :nnoremap <S-Tab> :bprevious<CR>
-:nnoremap <C-X> :bp\|:bdelete #<CR>
+map <Leader>x  :bp\|:bdelete #<CR>
+map <Leader>X  :bp\|:bdelete! #<CR>
 
 
 " 设置 gvim 显示字体
 " set guifont= Consolas
 " set guifont=Powerline\ Consolas\ 12
 " font repository https://github.com/Znuff/consolas-powerline
-set guifont=Consolas\ NF\ 12
+set guifont=Consolas\ NF\ 13
 " set guifont=YaHei\ Consolas\ Hybrid\ 12
 " set guifont=Go\ Mono\ for\ Powerline\ 12
 
@@ -320,6 +322,8 @@ let g:indexer_disableCtagsWarning=1
 nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
 " 只能是 #include 或已打开的文件
 nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>jc :YcmCompleter GoToImprecise<CR>
+nnoremap <leader>jt :YcmCompleter GoTo<CR>
 " 获取类型
 nnoremap <leader>gt :YcmCompleter GetType<CR>
 " 获取父类
@@ -362,6 +366,19 @@ let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_error_symbol = '->'
 let g:ycm_warning_symbol = '>>'
 
+let g:ycm_semantic_triggers =  {
+  \   'c': ['->', '.'],
+  \   'objc': ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \            're!\[.*\]\s'],
+  \   'ocaml': ['.', '#'],
+  \   'cpp,cuda,objcpp': ['->', '.', '::'],
+  \   'perl': ['->'],
+  \   'php': ['->', '::'],
+  \   'cs,d,elixir,go,groovy,java,javascript,julia,perl6,python,scala,typescript,vb': ['.'],
+  \   'ruby,rust': ['.', '::'],
+  \   'lua': ['.', ':'],
+  \   'erlang': [':'],
+  \ }
 
 " 使用 NERDTree 插件查看工程文件。设置快捷键，速记：file list
 nmap <Leader>fl :NERDTreeToggle<CR>
@@ -378,10 +395,19 @@ let NERDTreeAutoDeleteBuffer=1
 " 当没有buff时关闭NerdTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" Configure for vim-lsp
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 
-" 显示/隐藏 MiniBufExplorer 窗口
-" map <Leader>bl :MBEToggle<cr>
-" buffer 切换快捷键
-" map <Leader>ll :MBEbn<cr>
-" map <Leader>lh :MBEbp<cr>
+if executable('clangd')
+      au User lsp_setup call lsp#register_server({
+              \ 'name': '~/Downloads/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clangd',
+              \ 'cmd': {server_info->['clangd', '-background-index']},
+              \ 'whitelist': ['c', 'cpp'],
+              \ })
+endif
+
+nnoremap <leader>ld :LspDefinition<CR>
+"nnoremap <leader>jc :LspDeclaration<CR>
+nnoremap <leader>jr :LspReferences<CR>
+nnoremap <leader>js :LspStatus<CR>
 
