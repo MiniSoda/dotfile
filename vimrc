@@ -95,7 +95,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-obsession'
 Plugin 'prabirshrestha/async.vim'
-Plugin 'prabirshrestha/vim-lsp'
+Plugin 'lyuts/vim-rtags'
 
 " 插件列表结束
 call vundle#end()
@@ -317,6 +317,19 @@ let g:tagbar_type_cpp = {
 " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
 let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
 let g:indexer_disableCtagsWarning=1
+
+:set tags+=~/.indexer_files_tags/platinum_application
+:set tags+=~/.indexer_files_tags/platinum_libraries
+
+
+" choose not to use clangd
+let g:ycm_use_clangd = 0
+"let g:ycm_clangd_args = ['-log=verbose', '-pretty','-background-index']
+let g:ycm_clangd_args = ['-log=verbose', '-pretty']
+" Let clangd fully control code completion
+let g:ycm_clangd_uses_ycmd_caching = 0
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("/home/zheng/Downloads/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clangd")
 
 " YCM Configure
 nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
