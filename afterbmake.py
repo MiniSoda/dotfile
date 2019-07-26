@@ -1,4 +1,4 @@
-#usr/bin/python
+#!/usr/bin/python3
 
 import os
 import re
@@ -38,30 +38,40 @@ def handle_flags():
     info = 'Processing file: ' + command['file']
     print(info)
 
-    for flag in command["arguments"]: 
+    compile_string = command["command"]
+    compile_data = compile_string.split() #split string into a list
+
+    for flag in compile_data: 
       if 'arm-buildroot-linux-gnueabihf-g' in flag:
           gxx_path = flag
           if gxx_path:
               sysroot = Load_System_Root(gxx_path)
           break
 
-    command["arguments"] = MakeRelativePathsInFlagsAbsolute(command["arguments"],working_directory)
+    compile_data = MakeRelativePathsInFlagsAbsolute(compile_data,command["directory"])
 
     flags = []          
     flags.append('-target')
     flags.append('arm-linux-gnueabihf')
-    
+
     flags.append('--sysroot')
     flags.append(sysroot.rstrip())
 
     flags += Load_System_Includes( gxx_path )
     
+    '''
     try:
-      command["arguments"].remove( gxx_path )
+      compile_data.remove( gxx_path )
+      compile_data.remove( 'ccache' )
     except ValueError:
       pass
-
-    command["arguments"] = flags + command["arguments"]
+    '''
+    index = compile_data.index(gxx_path) + 1
+    compile_data[index:index] = flags
+    
+    seperator = ' '
+    command["command"] = seperator.join(compile_data)
+  
   return
 
 

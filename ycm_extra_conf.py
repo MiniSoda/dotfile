@@ -78,6 +78,10 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
   # search path for some libs
   new_flags = []
 
+  new_flags = LoadSystemIncludes(gxx_path)
+  new_flags.append('-target')
+  new_flags.append('arm-linux-gnueabihf')
+  
 
   try:
     flags.remove( gxx_path )

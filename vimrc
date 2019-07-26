@@ -96,6 +96,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-obsession'
 Plugin 'prabirshrestha/async.vim'
 Plugin 'lyuts/vim-rtags'
+" Plugin 'prabirshrestha/vim-lsp'
 
 " 插件列表结束
 call vundle#end()
@@ -323,19 +324,17 @@ let g:indexer_disableCtagsWarning=1
 
 
 " choose not to use clangd
-let g:ycm_use_clangd = 0
-"let g:ycm_clangd_args = ['-log=verbose', '-pretty','-background-index']
-let g:ycm_clangd_args = ['-log=verbose', '-pretty']
+let g:ycm_use_clangd = 1
+let g:ycm_clangd_args = ['-log=verbose', '-pretty','-background-index']
+" let g:ycm_clangd_args = ['-log=verbose', '-pretty']
 " Let clangd fully control code completion
-let g:ycm_clangd_uses_ycmd_caching = 0
+let g:ycm_clangd_uses_ycmd_caching = 1
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
 let g:ycm_clangd_binary_path = exepath("/home/zheng/Downloads/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clangd")
 
 " YCM Configure
-nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
-" 只能是 #include 或已打开的文件
 nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>jc :YcmCompleter GoToImprecise<CR>
+nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>jt :YcmCompleter GoTo<CR>
 " 获取类型
 nnoremap <leader>gt :YcmCompleter GetType<CR>
@@ -343,7 +342,7 @@ nnoremap <leader>gt :YcmCompleter GetType<CR>
 nnoremap <leader>gp :YcmCompleter GetParent<CR>
 " GoToInclude File under current cursor
 nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
-
+nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
 nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 
 
@@ -409,18 +408,18 @@ let NERDTreeAutoDeleteBuffer=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Configure for vim-lsp
-let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+"let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 
-if executable('clangd')
-      au User lsp_setup call lsp#register_server({
-              \ 'name': '~/Downloads/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clangd',
-              \ 'cmd': {server_info->['clangd', '-background-index']},
-              \ 'whitelist': ['c', 'cpp'],
-              \ })
-endif
+"if executable('clangd')
+      "au User lsp_setup call lsp#register_server({
+              "\ 'name': '~/Downloads/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clangd',
+              "\ 'cmd': {server_info->['clangd', '-pretty','-background-index']},
+              "\ 'whitelist': ['c', 'cpp','h','hpp'],
+              "\ })
+"endif
 
-nnoremap <leader>ld :LspDefinition<CR>
-"nnoremap <leader>jc :LspDeclaration<CR>
-nnoremap <leader>jr :LspReferences<CR>
-nnoremap <leader>js :LspStatus<CR>
+"nnoremap <leader>ld :LspDefinition<CR>
+""nnoremap <leader>jc :LspDeclaration<CR>
+"nnoremap <leader>jr :LspReferences<CR>
+"nnoremap <leader>js :LspStatus<CR>
 
