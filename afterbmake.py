@@ -59,13 +59,12 @@ def handle_flags():
 
     flags += Load_System_Includes( gxx_path )
     
-    '''
     try:
-      compile_data.remove( gxx_path )
-      compile_data.remove( 'ccache' )
+      compile_data.remove( '-Wno-psabi' )
+      #compile_data.remove( 'ccache' )
     except ValueError:
       pass
-    '''
+    
     index = compile_data.index(gxx_path) + 1
     compile_data[index:index] = flags
     
@@ -102,7 +101,8 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
   new_flags = []
 
   make_next_absolute = False
-  path_flags = [ '-isystem', '-I', '-iquote' ]
+  # path_flags = [ '-isystem', '-I' ]
+  path_flags = [ '-isystem' ]
   for flag in flags:
     new_flag = flag
 
@@ -127,6 +127,7 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
       new_flags.append( new_flag )
   # log_file.close()
   return new_flags
+
 
 def Load_System_Includes( gxx_path ):
   global compiler_dict
@@ -165,6 +166,7 @@ def Load_System_Root( gxx_path ):
     sysroot = os.popen(cmd).read()
     sysroot_dict[gxx_path] = sysroot
     return sysroot
+
 
 def main():
   read_compile_commands()
