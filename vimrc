@@ -120,6 +120,12 @@ set guioptions-=R
 set guioptions-=m
 set guioptions-=T
 
+set term=xterm-256color
+set t_Co=256
+let &t_AB="\e[48;5;%dm"
+let &t_AF="\e[38;5;%dm"
+set termguicolors
+
 " 总是显示状态栏
 set laststatus=2
 " 显示光标当前位置
@@ -164,8 +170,8 @@ map <Leader>X  :bp\|:bdelete! #<CR>
 " set guifont= Consolas
 " set guifont=Powerline\ Consolas\ 12
 " font repository https://github.com/Znuff/consolas-powerline
-set guifont=Consolas\ NF\ 13
-" set guifont=YaHei\ Consolas\ Hybrid\ 12
+"set guifont=Consolas\ NF\ 13
+ set guifont=YaHei\ Consolas\ Hybrid\ 12
 " set guifont=Go\ Mono\ for\ Powerline\ 12
 
 " 禁止折行
@@ -223,6 +229,9 @@ nmap <Leader>tp :tprevious<CR>
 fun! GetCurrentRoot()
   let t:root = g:NERDTree.ForCurrentTab().getRoot().path.str()
 endfun
+
+" file locate
+nmap <leader>f :NERDTreeFind<cr>
 
 
 " 使用 ctrlsf.vim
@@ -319,18 +328,19 @@ let g:tagbar_type_cpp = {
 let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
 let g:indexer_disableCtagsWarning=1
 
-:set tags+=~/.indexer_files_tags/platinum_application
-:set tags+=~/.indexer_files_tags/platinum_libraries
+":set tags+=~/.indexer_files_tags/platinum_application
+":set tags+=~/.indexer_files_tags/platinum_libraries
 
 
 " choose not to use clangd
 let g:ycm_use_clangd = 1
-let g:ycm_clangd_args = ['-log=verbose', '-pretty','-background-index']
+let g:ycm_clangd_args = ['-log=verbose', '-pretty','-background-index','--compile-commands-dir=/mnt/home/barco.com/jiazhe/platinum/build/samba/target']
 " let g:ycm_clangd_args = ['-log=verbose', '-pretty']
 " Let clangd fully control code completion
 let g:ycm_clangd_uses_ycmd_caching = 1
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-let g:ycm_clangd_binary_path = exepath("/home/zheng/Downloads/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clangd")
+"let g:ycm_clangd_binary_path = exepath("/home/zheng/Downloads/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clangd")
+let g:ycm_clangd_binary_path = exepath("/home/barco.com/jiazhe/clang-llvm/bin/clangd")
 
 " YCM Configure
 nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
@@ -395,7 +405,7 @@ let g:ycm_semantic_triggers =  {
 " 使用 NERDTree 插件查看工程文件。设置快捷键，速记：file list
 nmap <Leader>fl :NERDTreeToggle<CR>
 " 设置NERDTree子窗口宽度
-let NERDTreeWinSize=32
+let NERDTreeWinSize=31
 " 设置NERDTree子窗口位置
 let NERDTreeWinPos="right"
 " 显示隐藏文件
