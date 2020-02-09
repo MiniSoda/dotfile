@@ -111,6 +111,7 @@ colorscheme molokai
 
 " 禁止光标闪烁
 set gcr=a:block-blinkon0
+
 " 禁止显示滚动条
 set guioptions-=l
 set guioptions-=L
@@ -332,10 +333,9 @@ let g:indexer_disableCtagsWarning=1
 ":set tags+=~/.indexer_files_tags/platinum_libraries
 
 
-" choose not to use clangd
+" choose to use clangd
 let g:ycm_use_clangd = 1
 let g:ycm_clangd_args = ['-log=verbose', '-pretty','-background-index','--compile-commands-dir=/mnt/home/barco.com/jiazhe/platinum/build/samba/target']
-" let g:ycm_clangd_args = ['-log=verbose', '-pretty']
 " Let clangd fully control code completion
 let g:ycm_clangd_uses_ycmd_caching = 1
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
@@ -356,6 +356,7 @@ nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
 nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 
 
+nnoremap <F2> :echo expand('%:p')<CR>
 
 " YCM 补全菜单配色
 " 菜单
