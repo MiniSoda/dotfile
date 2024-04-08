@@ -98,6 +98,9 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-obsession'
 Plugin 'prabirshrestha/async.vim'
 Plugin 'prabirshrestha/vim-lsp'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+
 Plugin 'liuchengxu/vista.vim'
 " Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
 " Plugin 'octol/vim-cpp-enhanced-highlight'
@@ -256,8 +259,6 @@ let g:SignatureMap = {
         \ }
 
 
-set updatetime=500
-
 " Configure for vim-lsp
 " disable diagnostics support
 " let g:lsp_diagnostics_enabled = 1         
@@ -278,6 +279,18 @@ nnoremap <leader>gd :LspDefinition<CR>
 nnoremap <leader>jd :LspDeclaration<CR>
 nnoremap <leader>fr :LspReferences<CR>
 nnoremap <leader>js :LspStatus<CR>
+nnoremap <leader>pd :LspPeekDefinition<CR>
+
+" Setup asyncomplete
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+" au User asyncomplete_setup call asyncomplete#register_source({
+" \ 'name': 'vim-lsp',
+" \ 'whitelist': ['c', 'cpp', 'python', 'javascript', 'html', 'css'],
+" \ 'completor': function('asyncomplete#sources#vim_lsp#completor'),
+" \ })
 
 
 " vista 
@@ -297,13 +310,6 @@ let g:vista_executive_for = {
   \ 'cpp': 'vim_lsp',
   \ 'php': 'vim_lsp',
   \ }
-
-" Declare the command including the executable and options used to generate ctags output
-" for some certain filetypes.The file path will be appened to your custom command.
-" For example:
-let g:vista_ctags_cmd = {
-      \ 'haskell': 'hasktags -x -o - -c',
-      \ }
 
 " To enable fzf's preview window set g:vista_fzf_preview.
 " The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
